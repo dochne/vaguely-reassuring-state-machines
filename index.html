@@ -115,12 +115,13 @@
       
       (async () => {
         // return;
-          const {feed} = JSON.parse(await (async () => {
-          // const {feed} = JSON.parse(await cache("state", async () => {
+          const {feed} = await cache("state", async () => {
               const url = `https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=${actor}`;
               const response = await fetch(url);
-              return JSON.stringify(await response.json());
-          })());
+              return await response.json();
+          }, 300); // we'll try and get a fresh set every 5 minutes
+
+          console.log(feed);
           document.querySelector(".loading").classList.remove("show");
           document.querySelector(".content").classList.add("show");
 
@@ -146,7 +147,7 @@
                 if (value === '') {
                   return '';
                 }
-                console.log("Value", value, "matches", value.match(regexp));
+                // console.log("Value", value, "matches", value.match(regexp));
                 let matches = value.match(regexp);
                 let title = matches ? `Matched '${matches[0]}'` : ''
                 return `<span title="${title}">${matches && matches[0] === value ? "✅" : "❌"}</span>`;

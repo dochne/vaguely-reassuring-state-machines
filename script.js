@@ -1,10 +1,19 @@
-async function cache(key, callable) {
+async function cache(key, callable, maxAge=86400) {
     const value = window.localStorage.getItem(key);
     if (value !== null) {
-        return value;
+        // 1735256815544
+        const {updatedAt, data} = JSON.parse(value)
+        if (Date.now() - (maxAge * 1000) < updatedAt) {
+            return data;
+        }
     }
-    window.localStorage.setItem(key, await callable());
-    return window.localStorage.getItem(key);
+
+    const data = await callable();
+    window.localStorage.setItem(key, JSON.stringify({
+        "data": data,
+        "updatedAt": Date.now()
+    }))
+    return data;
 }
 
 
@@ -12,7 +21,10 @@ function getCurrentPost(feed){
     const path = new URL(window.location.href).pathname
     const matches = path.match(new RegExp("post/([^/]*)"));
     if (matches) {
-      return feed.find(v => v.post.cid === matches[1]).post || undefined;
+      let val = feed.find(v => v.post.uri.split("/").pop() === matches[1])
+      if (val !== undefined) {
+        return val.post;
+      } 
     }
 
     for (const {post} of feed) {
@@ -34,8 +46,7 @@ function buildSidebar(feed, currentPost) {
       if (!isValidPost(post)) {
         continue;
       }
-      // console.log("From Path", path, postCid, "In Post", post.cid);
-      sidebar += `<a href="/post/${post.cid}" class="list-group-item ${post.cid === currentPost.cid ? 'active' : ''}">
+      sidebar += `<a href="/post/${post.uri.split("/").pop()}" class="list-group-item ${post.cid === currentPost.cid ? 'active' : ''}">
           <span class="d-flex w-100 align-items-center justify-content-between">
             <strong class="mb-1">${post.record.text}</strong>
           <span>
