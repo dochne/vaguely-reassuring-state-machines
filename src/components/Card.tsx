@@ -30,10 +30,12 @@ function test(regExp: RegExp | null, testCase: string, expectValid = true) {
 export function Card({ post }: Props) {
 
   const [state, setState] = useLocalStorage<StorageProps>(`post:${post.cid}`, {regex: "", valid: [], invalid: []});
-  const {regex, valid, invalid} = state;
+  let {regex, valid, invalid} = state;
 
-  console.log("State", state);
-
+  // Support for if we have our previous format saved to localstorage
+  if (typeof valid === "string") valid = (valid as string).split("\n");
+  if (typeof invalid === "string") invalid = (invalid as string).split("\n");
+  
   let regExp = null;
   let error = null;
   try {
