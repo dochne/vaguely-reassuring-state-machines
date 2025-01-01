@@ -28,7 +28,7 @@ function App() {
   return (
     <>
       {loading || currentPost === undefined ? (
-        <Loading />
+        <div style={{textAlign: 'center'}}><Loading /></div>
       ) : (
         <Content posts={posts} currentPost={currentPost} />
       )}

@@ -41,6 +41,6 @@ export function imageCropper(url: string): Promise<string> {
         reject(error);
       };
     };
-    img.src = `https://cors-proxy.jolly-unit-1591.workers.dev/?url=${encodeURIComponent(url)}`;
+    img.src = `https://cors-proxy.dochne.com/?url=${encodeURIComponent(url)}`;
   });
 }
