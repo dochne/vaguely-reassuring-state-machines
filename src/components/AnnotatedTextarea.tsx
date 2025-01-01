@@ -18,10 +18,8 @@ export function AnnotatedTextarea({
 }: Props) {
   const annotationRef = useRef<HTMLDivElement>(null);
   return (
-    <div className="mb-3">
-      <label htmlFor="valid" className="form-label">
-        {label}
-      </label>
+    <div className="terminal-card">
+      <header>{label}</header>
       <div className="textarea-container">
         <div className="test-results" ref={annotationRef}>
           {annotations.join("\n")}

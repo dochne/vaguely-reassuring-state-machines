@@ -2,11 +2,8 @@
 
 export function About() {
     return (
-        <div
-          className="card"
-          style={{ marginTop: "20px", marginBottom: "20px" }}
-        >
-          <div className="card-header">FAQ</div>
+        <div className={"terminal-card"}>
+          <header>FAQ</header>
           <div className="card-body">
             <strong>What is this? What am I trying to do?</strong>
             <p>

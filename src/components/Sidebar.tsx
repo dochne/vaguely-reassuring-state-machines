@@ -7,19 +7,19 @@ interface Props {
 
 export function Sidebar({ posts, currentPost }: Props) {
   return (
-    <div className="list-group" id="sidebar">
+    <nav>
+        <ul>
       {posts.map((post) => (
+        <li className={post.cid == currentPost.cid ? "active" : ""} key={post.cid}>
         <a
-          key={post.cid}
           href={`/post/${post.uri.split("/").pop()}`}
-          className={`list-group-item ${post.cid == currentPost.cid ? "active" : ""}`}
         >
-          <span className="d-flex w-100 align-items-center justify-content-between">
-            <strong className="mb-1">{post.record.text}</strong>
-          </span>
-          <span className="small">{post.indexedAt.split("T")[0]}</span>
+            {/* {post.indexedAt.split("T")[0]} - */}
+            {post.record.text}
         </a>
+        </li>
       ))}
-    </div>
+      </ul>
+    </nav>
   );
 }
