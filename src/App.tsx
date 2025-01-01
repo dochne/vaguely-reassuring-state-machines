@@ -21,7 +21,8 @@ function getCurrentPost(posts: Post[]) {
 }
 
 function App() {
-  const { loading, data: posts, error } = usePosts();
+  // Todo: Handle error from usePosts
+  const { loading, data: posts } = usePosts();
   const currentPost = getCurrentPost(posts || []);
 
   return (
