@@ -21,12 +21,12 @@ function getCurrentPost(posts: Post[]) {
 }
 
 function App() {
-  const { loading, data: posts, error } = usePosts();
+  // Todo: Handle error from usePosts
+  const { loading, data: posts } = usePosts();
   const currentPost = getCurrentPost(posts || []);
 
   return (
     <>
-      <h2 className="m-4 text-center">vaguely reassuring state machines</h2>
       {loading || currentPost === undefined ? (
         <Loading />
       ) : (
