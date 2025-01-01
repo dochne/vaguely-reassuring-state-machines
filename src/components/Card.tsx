@@ -32,6 +32,8 @@ export function Card({ post }: Props) {
   const [state, setState] = useLocalStorage<StorageProps>(`post:${post.cid}`, {regex: "", valid: [], invalid: []});
   const {regex, valid, invalid} = state;
 
+  console.log("State", state);
+
   let regExp = null;
   let error = null;
   try {
