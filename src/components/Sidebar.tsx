@@ -6,7 +6,7 @@ interface Props {
 }
 
 function buildUrl(postId: string) {
-    const prefix = window.location.pathname.replace(new RegExp(/post\/*/), "")
+    const prefix = window.location.pathname.replace(new RegExp(/\/post\/*/), "")
     return `${prefix}/post/${postId}`
 }
 
