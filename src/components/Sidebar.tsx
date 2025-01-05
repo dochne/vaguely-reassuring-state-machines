@@ -14,7 +14,7 @@ export function Sidebar({ posts, currentPost }: Props) {
 
   return (
     <nav>
-        <ul>
+        <ul style={{marginTop: '0px'}}>
       {posts.map((post) => (
         <li className={post.cid == currentPost.cid ? "active" : ""} key={post.cid}>
         <a href={buildUrl(post.uri.split("/").pop()!)}>

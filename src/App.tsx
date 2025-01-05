@@ -1,4 +1,3 @@
-import "./App.css";
 import { usePosts } from "./hooks/usePosts";
 import { Loading } from "./components/Loading";
 import { Post } from "./types";
