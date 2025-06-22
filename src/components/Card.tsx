@@ -3,6 +3,7 @@ import { AnnotatedTextarea } from "./AnnotatedTextarea";
 import { RegexInput } from "./RegexInput";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { CroppedImage } from "./CroppedImage";
+import { Base64 } from "js-base64";
 
 interface Props {
   post: Post;
@@ -28,8 +29,25 @@ function test(regExp: RegExp | null, testCase: string, expectValid = true) {
 }
 
 export function Card({ post }: Props) {
-
   const [state, setState] = useLocalStorage<StorageProps>(`post:${post.cid}`, {regex: "", valid: [], invalid: []});
+
+  const path = new URL(window.location.href).pathname;
+  const matches = path.match(new RegExp("(post/[^/]*)(?:/share/(.*))"));
+
+  if (matches) {
+    const decodedState = Base64.decode(matches[2]);
+
+    try {
+      const parsed = JSON.parse(decodedState)
+      // Todo: Maybe do more validation here. This is laaazy
+      setState(parsed);
+    } catch (err) {
+      console.warn("Failed to parse share", err);
+    } finally {
+      window.history.replaceState({}, "", `/${matches[1]}`);
+    }
+  }
+
   let {regex, valid, invalid} = state;
 
   // Support for if we have our previous format saved to localstorage
@@ -67,6 +85,10 @@ export function Card({ post }: Props) {
 
         <RegexInput
           onChange={async (value) => setState({...state, regex: value})}
+          onShare={async () => {
+            const url = `${window.location.href}/share/${Base64.encodeURI(JSON.stringify(state))}`
+            navigator.clipboard.writeText(url);
+          }}
           value={regex}
           error={error}
         />

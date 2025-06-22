@@ -4,14 +4,24 @@ export function useLocalStorage<T>(
   key: string,
   defaultValue: T,
 ): [T, (arg0: T) => void] {
-  const [state, setState] = useState<T>(() => {
-    const storedValue = window.localStorage.getItem(key);
-    return storedValue ? JSON.parse(storedValue) : defaultValue;
-  });
+  // console.log("UseLocalStorage happening");
+  const [state, setState] = useState<T>(defaultValue);
 
   useEffect(() => {
-    window.localStorage.setItem(key, JSON.stringify(state));
-  }, [key, state]);
+    const item = localStorage.getItem(key);
+    if (!item) {
+      localStorage.setItem(key, JSON.stringify(defaultValue));
+    }
+    console.log("Callign setStateeee");
+    setState(item ? JSON.parse(item) : defaultValue);
+  }, []);
 
-  return [state, setState];
+  return [
+    state,
+    (value: T) => {
+      console.log("Calling set with ", value);
+      setState(value);
+      localStorage.setItem(key, JSON.stringify(value));
+    },
+  ];
 }
